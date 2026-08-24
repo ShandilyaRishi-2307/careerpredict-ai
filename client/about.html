@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/about.html" class="nav-link active">About</a></li>
+        <li><a href="/model.html" class="nav-link">Model</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 3rem 0 4rem;">
+    <div class="container" style="max-width: 900px;">
+      
+      <div style="text-align:center; margin-bottom:3rem;">
+        <span class="badge badge-primary" style="margin-bottom:0.75rem;">Mission & Architecture</span>
+        <h1 style="font-size:2.5rem; margin-bottom:0.75rem;">About CareerPredict AI</h1>
+        <p class="text-muted" style="max-width:680px; margin:0 auto; font-size:1.1rem; line-height:1.6;">
+          Democratizing transparent career readiness analysis with rigorous statistical machine learning and modern web technologies.
+        </p>
+      </div>
+
+      <!-- Section: Mission -->
+      <div class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:1rem;">🎯 Project Purpose & Mission</h2>
+        <p style="font-size:1rem; line-height:1.7; color:var(--text-main); margin-bottom:1rem;">
+          Navigating tech job searches can often feel opaque and uncertain. Candidates frequently wonder which skills have the highest hiring leverage, whether additional certifications move the needle, or how to allocate limited preparation time.
+        </p>
+        <p style="font-size:1rem; line-height:1.7; color:var(--text-main);">
+          <strong>CareerPredict AI</strong> was designed to provide transparent, explainable career assessments. Rather than relying on black-box heuristics, our system leverages an interpretable Logistic Regression model to compute exact placement probabilities and generate prioritized, actionable skill growth roadmaps.
+        </p>
+      </div>
+
+      <!-- Section: System Architecture -->
+      <div id="architecture" class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:1rem;">🏗️ System Architecture & Workflow</h2>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem;">
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem;">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem;">1. Frontend & Client</div>
+            <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.5;">
+              Clean semantic HTML5, modern CSS3 with custom variables, and vanilla JavaScript client. Uses Supabase Auth client for authentication and Chart.js for data visualization.
+            </p>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem;">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem;">2. Backend Express API</div>
+            <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.5;">
+              Node.js and Express RESTful API server implementing robust JWT/Supabase bearer token verification, modular service controllers, input sanitization, and dual-persistence storage.
+            </p>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem;">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem;">3. Data Persistence</div>
+            <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.5;">
+              Dual-layer data strategy: connects seamlessly to MongoDB with Mongoose schemas, and includes an embedded in-memory persistence engine with file-backup fallback when external DB URIs are unconfigured.
+            </p>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem;">
+            <div style="font-size:1.25rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem;">4. Python ML Microservice</div>
+            <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.5;">
+              Scikit-learn Logistic Regression pipeline executing data transformations, feature standard scaling, and probability inference via Python microservice and native linear algebraic fallback.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Key Highlights -->
+      <div class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:1rem;">⚡ Key Platform Highlights</h2>
+        <ul style="line-height:1.8; padding-left:1.25rem; font-size:0.95rem;">
+          <li><strong>5-Step Multi-Step Assessment:</strong> User-friendly progress navigation capturing 20+ candidate dimensions.</li>
+          <li><strong>Explainable Probability Scores:</strong> Breaks down both job probability ($P=1$) and complementary no-job probability ($P=0$).</li>
+          <li><strong>Dynamic Recommendations:</strong> Calculates candidate strengths, weakness flags, and prioritized actionable steps.</li>
+          <li><strong>Role-Specific Benchmark Analysis:</strong> Compares candidates directly against role benchmarks (Frontend, Backend, ML, DevOps, etc.).</li>
+          <li><strong>Historical Snapshots:</strong> Full immutable snapshot storage to monitor trajectory and skill improvements over time.</li>
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center; margin-top:2.5rem;">
+        <a href="/predict.html" class="btn btn-primary btn-lg">
+          ⚡ Try the Prediction Assessment
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

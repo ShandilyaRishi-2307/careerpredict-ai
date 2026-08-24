@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/model.html" class="nav-link">Model</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/register.html" class="btn btn-primary btn-sm">Register Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-logo">⚡</div>
+        <h1>Welcome Back</h1>
+        <p class="text-muted">Sign in to your CareerPredict AI account</p>
+      </div>
+
+      <!-- Quick Demo Account Box -->
+      <div class="demo-account-box">
+        <div>
+          <strong>⚡ Quick Demo Credentials</strong>
+          <div style="font-size:0.75rem; color:#4338ca;">One-click login for testing</div>
+        </div>
+        <div style="display:flex; gap:0.35rem;">
+          <button type="button" class="demo-btn" id="quick-demo-candidate-btn">Candidate</button>
+          <button type="button" class="demo-btn" id="quick-demo-admin-btn">Admin</button>
+        </div>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email" class="form-label">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="you@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <label for="login-password" class="form-label" style="margin-bottom:0;">Password</label>
+            <a href="#" id="forgot-password-link" style="font-size:0.8rem; color:var(--primary);">Forgot password?</a>
+          </div>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem;">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-divider">OR</div>
+
+      <div class="auth-footer">
+        Don't have an account yet? <a href="/register.html" style="font-weight:700; color:var(--primary);">Create an account →</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

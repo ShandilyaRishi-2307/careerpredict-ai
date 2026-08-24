@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Profile — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/history.html" class="nav-link">History</a></li>
+        <li><a href="/profile.html" class="nav-link active">Profile</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 2.5rem 0 4rem;">
+    <div class="container">
+      <div class="profile-grid">
+        
+        <!-- Left Sidebar -->
+        <div class="profile-card-sidebar">
+          <div class="profile-summary-card">
+            <div class="profile-avatar-large">👤</div>
+            <h2 id="prof-name-display" style="font-size:1.35rem; margin-bottom:0.25rem;">Candidate</h2>
+            <p id="prof-email-display" class="text-muted" style="font-size:0.875rem; margin-bottom:0.75rem;">user@example.com</p>
+            <span id="prof-role-badge" class="badge badge-primary">Job Candidate</span>
+          </div>
+
+          <!-- Profile Completeness Card -->
+          <div class="completeness-card">
+            <div class="completeness-header">
+              <span>Profile Completeness</span>
+              <span id="completeness-percent" style="color:var(--primary);">75%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div id="completeness-bar-fill" class="progress-bar-fill" style="width:75%; background:var(--primary);"></div>
+            </div>
+            <p style="font-size:0.775rem; color:var(--text-muted); margin-top:0.6rem; line-height:1.4;">
+              A complete profile enables accurate default values in prediction runs.
+            </p>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="card" style="padding:1.25rem; border-color:#fee2e2; background:#fffaf0;">
+            <h4 style="font-size:0.9rem; color:var(--danger); margin-bottom:0.4rem;">Account Settings</h4>
+            <p style="font-size:0.775rem; color:var(--text-muted); margin-bottom:0.85rem;">
+              Permanently remove your account and all associated prediction history.
+            </p>
+            <button id="delete-account-btn" class="btn btn-outline btn-sm" style="color:var(--danger); border-color:#fca5a5; width:100%; font-size:0.8rem;">
+              Delete Account
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Main Form -->
+        <div>
+          <form id="profile-edit-form">
+            
+            <!-- Section 1: Basic Info -->
+            <div class="profile-section-card">
+              <div class="section-header">
+                <h3>👤 Account & Personal Details</h3>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-name" class="form-label">Full Name</label>
+                  <input type="text" id="prof-name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-email" class="form-label">Email Address</label>
+                  <input type="email" id="prof-email" class="form-control" disabled style="background:#f1f5f9; cursor:not-allowed;">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-age" class="form-label">Age</label>
+                  <input type="number" id="prof-age" class="form-control" min="16" max="80" value="23">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-gender" class="form-label">Gender</label>
+                  <select id="prof-gender" class="form-control">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-location" class="form-label">Location</label>
+                  <input type="text" id="prof-location" class="form-control" placeholder="City, State / Country" value="San Francisco, CA">
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Education -->
+            <div class="profile-section-card">
+              <div class="section-header">
+                <h3>🎓 Academic Background</h3>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-education" class="form-label">Education Level</label>
+                  <select id="prof-education" class="form-control">
+                    <option value="High School">High School</option>
+                    <option value="Associate">Associate Degree</option>
+                    <option value="Bachelor's" selected>Bachelor's Degree</option>
+                    <option value="Master's">Master's Degree</option>
+                    <option value="Doctorate">Doctorate</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-field" class="form-label">Field of Study</label>
+                  <select id="prof-field" class="form-control">
+                    <option value="Computer Science" selected>Computer Science & Engineering</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Electrical Engineering">Electrical Engineering</option>
+                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                    <option value="Business & Finance">Business & Finance</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prof-degree" class="form-label">Degree Title</label>
+                <input type="text" id="prof-degree" class="form-control" placeholder="e.g. B.S. in Computer Science" value="B.S. in Computer Science">
+              </div>
+            </div>
+
+            <!-- Section 3: Experience & Practical Work -->
+            <div class="profile-section-card">
+              <div class="section-header">
+                <h3>💼 Professional Experience & Projects</h3>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-experience" class="form-label">Years of Experience</label>
+                  <input type="number" id="prof-experience" class="form-control" min="0" max="30" step="0.5" value="1.0">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-internships" class="form-label">Internships Completed</label>
+                  <input type="number" id="prof-internships" class="form-control" min="0" max="15" value="2">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-previous-jobs" class="form-label">Previous Full-Time Jobs</label>
+                  <input type="number" id="prof-previous-jobs" class="form-control" min="0" max="10" value="0">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-projects" class="form-label">Portfolio Projects</label>
+                  <input type="number" id="prof-projects" class="form-control" min="0" max="25" value="3">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-certifications" class="form-label">Certifications</label>
+                  <input type="number" id="prof-certifications" class="form-control" min="0" max="15" value="2">
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 4: Skills Calibration -->
+            <div class="profile-section-card">
+              <div class="section-header">
+                <h3>⚙️ Competencies & Skill Ratings</h3>
+              </div>
+
+              <div class="form-group">
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                  <label for="prof-technicalSkillScore" class="form-label">Overall Technical Skill</label>
+                  <span id="prof-technicalSkillScore-val" class="badge badge-primary">78%</span>
+                </div>
+                <input type="range" id="prof-technicalSkillScore" min="0" max="100" value="78">
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-dataStructuresScore" class="form-label">Data Structures</label>
+                    <span id="prof-dataStructuresScore-val" class="badge badge-secondary">75%</span>
+                  </div>
+                  <input type="range" id="prof-dataStructuresScore" min="0" max="100" value="75">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-algorithmScore" class="form-label">Algorithms</label>
+                    <span id="prof-algorithmScore-val" class="badge badge-secondary">74%</span>
+                  </div>
+                  <input type="range" id="prof-algorithmScore" min="0" max="100" value="74">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-webDevelopmentScore" class="form-label">Web Development</label>
+                    <span id="prof-webDevelopmentScore-val" class="badge badge-secondary">80%</span>
+                  </div>
+                  <input type="range" id="prof-webDevelopmentScore" min="0" max="100" value="80">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-databaseScore" class="form-label">Databases / SQL</label>
+                    <span id="prof-databaseScore-val" class="badge badge-secondary">76%</span>
+                  </div>
+                  <input type="range" id="prof-databaseScore" min="0" max="100" value="76">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-machineLearningScore" class="form-label">Machine Learning</label>
+                    <span id="prof-machineLearningScore-val" class="badge badge-secondary">68%</span>
+                  </div>
+                  <input type="range" id="prof-machineLearningScore" min="0" max="100" value="68">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-cloudScore" class="form-label">Cloud / DevOps</label>
+                    <span id="prof-cloudScore-val" class="badge badge-secondary">70%</span>
+                  </div>
+                  <input type="range" id="prof-cloudScore" min="0" max="100" value="70">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-problemSolvingScore" class="form-label">Problem Solving</label>
+                    <span id="prof-problemSolvingScore-val" class="badge badge-info">78%</span>
+                  </div>
+                  <input type="range" id="prof-problemSolvingScore" min="0" max="100" value="78">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-communicationScore" class="form-label">Communication</label>
+                    <span id="prof-communicationScore-val" class="badge badge-info">72%</span>
+                  </div>
+                  <input type="range" id="prof-communicationScore" min="0" max="100" value="72">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-interviewScore" class="form-label">Interview Score</label>
+                    <span id="prof-interviewScore-val" class="badge badge-info">75%</span>
+                  </div>
+                  <input type="range" id="prof-interviewScore" min="0" max="100" value="75">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-resumeScore" class="form-label">Resume Quality</label>
+                    <span id="prof-resumeScore-val" class="badge badge-info">80%</span>
+                  </div>
+                  <input type="range" id="prof-resumeScore" min="0" max="100" value="80">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-aptitudeScore" class="form-label">Aptitude & Reasoning</label>
+                    <span id="prof-aptitudeScore-val" class="badge badge-info">75%</span>
+                  </div>
+                  <input type="range" id="prof-aptitudeScore" min="0" max="100" value="75">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-githubActivity" class="form-label">GitHub Activity</label>
+                    <span id="prof-githubActivity-val" class="badge badge-info">70%</span>
+                  </div>
+                  <input type="range" id="prof-githubActivity" min="0" max="100" value="70">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-leadershipScore" class="form-label">Leadership</label>
+                    <span id="prof-leadershipScore-val" class="badge badge-secondary">65%</span>
+                  </div>
+                  <input type="range" id="prof-leadershipScore" min="0" max="100" value="65">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="prof-teamworkScore" class="form-label">Teamwork</label>
+                    <span id="prof-teamworkScore-val" class="badge badge-secondary">75%</span>
+                  </div>
+                  <input type="range" id="prof-teamworkScore" min="0" max="100" value="75">
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 5: Preferences -->
+            <div class="profile-section-card">
+              <div class="section-header">
+                <h3>🎯 Career Preferences</h3>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-desired-role" class="form-label">Target Role</label>
+                  <select id="prof-desired-role" class="form-control">
+                    <option value="Software Developer" selected>Software Developer</option>
+                    <option value="Full Stack Engineer">Full Stack Engineer</option>
+                    <option value="Backend Developer">Backend Developer</option>
+                    <option value="Frontend Developer">Frontend Developer</option>
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="ML Engineer">Machine Learning Engineer</option>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-work-pref" class="form-label">Work Preference</label>
+                  <select id="prof-work-pref" class="form-control">
+                    <option value="Hybrid" selected>Hybrid</option>
+                    <option value="Remote">Remote</option>
+                    <option value="On-site">On-site</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                <div class="form-group">
+                  <label for="prof-salary" class="form-label">Expected Annual Salary</label>
+                  <input type="text" id="prof-salary" class="form-control" value="$95,000">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof-relocation" class="form-label">Relocation</label>
+                  <select id="prof-relocation" class="form-control">
+                    <option value="Yes" selected>Yes</option>
+                    <option value="No">No</option>
+                    <option value="Depends on location">Depends on location</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div style="text-align:right;">
+              <button type="submit" id="profile-save-btn" class="btn btn-primary btn-lg">
+                Save Profile Changes
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/profile.js"></script>
+</body>
+</html>

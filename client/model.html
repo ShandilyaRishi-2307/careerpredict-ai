@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machine Learning Architecture — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/model.html" class="nav-link active">Model</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 3rem 0 4rem;">
+    <div class="container" style="max-width: 900px;">
+      
+      <div style="text-align:center; margin-bottom:3rem;">
+        <span class="badge badge-primary" style="margin-bottom:0.75rem;">Machine Learning Documentation</span>
+        <h1 style="font-size:2.5rem; margin-bottom:0.75rem;">Logistic Regression Model Architecture</h1>
+        <p class="text-muted" style="max-width:680px; margin:0 auto; font-size:1.1rem; line-height:1.6;">
+          An in-depth explanation of the mathematical formulation, feature engineering, training hyperparameters, and evaluation metrics powering CareerPredict AI.
+        </p>
+      </div>
+
+      <!-- Section 1: Mathematical Formulation -->
+      <div class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:1rem;">1. Mathematical Formulation & Sigmoid Activation</h2>
+        <p>
+          CareerPredict AI uses a calibrated <strong>Logistic Regression</strong> binary classification algorithm. The model maps a continuous linear combination of candidate feature inputs to a probability bounded between <code>0.0</code> and <code>1.0</code> via the standard Sigmoid activation function:
+        </p>
+
+        <div style="background:#0f172a; color:#e2e8f0; padding:1.5rem; border-radius:var(--radius-lg); font-family:var(--font-mono); font-size:1.05rem; margin:1.25rem 0; overflow-x:auto;">
+          $$ P(Y = 1 \mid X) = \sigma(z) = \frac{1}{1 + e^{-z}} $$
+          <br>
+          <span style="color:#94a3b8; font-size:0.9rem;">where:</span>
+          <br>
+          $$ z = \beta_0 + \sum_{i=1}^{n} \beta_i \cdot x_i $$
+        </div>
+
+        <p style="font-size:0.95rem; line-height:1.6;">
+          Here, <code>&beta;<sub>0</sub></code> represents the model intercept (bias), <code>&beta;<sub>i</sub></code> represents the learned coefficient for feature <code>x<sub>i</sub></code>, and <code>P(Y = 1 | X)</code> yields the estimated probability that a candidate meets placement qualification standards.
+        </p>
+      </div>
+
+      <!-- Section 2: Model Performance Metrics -->
+      <div id="metrics" class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:1rem;">2. Empirical Model Evaluation Metrics</h2>
+        <p class="text-muted" style="margin-bottom:1.5rem;">
+          The model was evaluated using a 5-fold cross-validated test partition containing 1,000 independent samples:
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Accuracy</div>
+            <div style="font-size:2rem; font-weight:800; color:var(--primary); margin:0.25rem 0;">90.8%</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Overall classification</div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Precision</div>
+            <div style="font-size:2rem; font-weight:800; color:var(--success); margin:0.25rem 0;">93.7%</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Positive predictive value</div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Recall / Sensitivity</div>
+            <div style="font-size:2rem; font-weight:800; color:var(--secondary); margin:0.25rem 0;">95.3%</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">True positive rate</div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">F1-Score</div>
+            <div style="font-size:2rem; font-weight:800; color:#8b5cf6; margin:0.25rem 0;">94.4%</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Harmonic mean</div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; text-align:center;">
+            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">ROC-AUC</div>
+            <div style="font-size:2rem; font-weight:800; color:#0ea5e9; margin:0.25rem 0;">0.949</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Area under ROC curve</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Feature Weights & Importance -->
+      <div id="features" class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:0.5rem;">3. Logistic Regression Coefficients & Feature Importance</h2>
+        <p class="text-muted" style="margin-bottom:1.5rem;">
+          Standardized Ridge L2 feature weights indicate the relative sensitivity of each attribute on candidate placement likelihood:
+        </p>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Feature Name</th>
+                <th>Coefficient (&beta;)</th>
+                <th>Standard Impact</th>
+                <th>Interpretation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>technicalSkillScore</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.7203</code></td>
+                <td><span class="badge badge-success">High Positive</span></td>
+                <td>Primary core determinant of technical competency</td>
+              </tr>
+              <tr>
+                <td><strong>problemSolvingScore</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.6482</code></td>
+                <td><span class="badge badge-success">High Positive</span></td>
+                <td>Strongest indicator for code interview pass-rates</td>
+              </tr>
+              <tr>
+                <td><strong>yearsExperience</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.5218</code></td>
+                <td><span class="badge badge-success">High Positive</span></td>
+                <td>Practical on-the-job engineering tenure</td>
+              </tr>
+              <tr>
+                <td><strong>interviewScore</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.4851</code></td>
+                <td><span class="badge badge-info">Moderate Positive</span></td>
+                <td>Behavioral and systemic communication</td>
+              </tr>
+              <tr>
+                <td><strong>internshipCount</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.4120</code></td>
+                <td><span class="badge badge-info">Moderate Positive</span></td>
+                <td>Verified pre-graduation professional exposure</td>
+              </tr>
+              <tr>
+                <td><strong>projectCount</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.3540</code></td>
+                <td><span class="badge badge-info">Moderate Positive</span></td>
+                <td>Public portfolio and code repo evidence</td>
+              </tr>
+              <tr>
+                <td><strong>education_Bachelor's</strong></td>
+                <td><code style="color:var(--success); font-weight:700;">+0.2814</code></td>
+                <td><span class="badge badge-secondary">Base Positive</span></td>
+                <td>Accredited STEM degree baseline</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 4: Training & Preprocessing Pipeline -->
+      <div class="card" style="padding:2rem; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; margin-bottom:1rem;">4. Training & Data Preprocessing Pipeline</h2>
+        <ul style="line-height:1.7; padding-left:1.25rem;">
+          <li><strong>Standard Scaling:</strong> Numerical features (skills 0-100, years of experience, project counts) are zero-mean unit-variance normalized using <code>StandardScaler</code>.</li>
+          <li><strong>Categorical Encoding:</strong> Degrees and fields of study are encoded using <code>OneHotEncoder</code> with <code>handle_unknown='ignore'</code>.</li>
+          <li><strong>Regularization:</strong> Ridge (L2 penalty) regularizer with <code>C=1.0</code> to prevent overfitting and ensure numerical stability.</li>
+          <li><strong>Dual Fallback Engine:</strong> Node.js server automatically falls back to compiled internal linear algebraic evaluation if the Python child process encounters environmental timeouts.</li>
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center; margin-top:2.5rem;">
+        <a href="/predict.html" class="btn btn-primary btn-lg">
+          ⚡ Run the Model with Your Profile
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+        <div>Model Artifact: <code>logistic_regression_model.pkl</code></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

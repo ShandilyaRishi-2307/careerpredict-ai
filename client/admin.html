@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span> <span class="badge badge-secondary" style="font-size:0.65rem; margin-left:0.35rem;">ADMIN</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Candidate View</a></li>
+        <li><a href="/admin.html" class="nav-link active">Admin Portal</a></li>
+        <li><a href="/model.html" class="nav-link">Model Docs</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 2.5rem 0 4rem;">
+    <div class="container">
+      
+      <!-- Top Title -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <h1 style="font-size:1.85rem; margin-bottom:0.25rem;">Administrator Analytics & Model Hub</h1>
+          <p class="text-muted">System-wide candidate assessments, model health metrics, and user analytics</p>
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+          <span class="badge badge-success" style="padding:0.4rem 0.75rem; font-size:0.8rem;">● ML Service Active (Port 8000)</span>
+        </div>
+      </div>
+
+      <!-- High-Level Metric Cards -->
+      <div class="admin-metrics-grid">
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Total Registered Users</div>
+          <div id="admin-total-users" style="font-size:1.85rem; font-weight:800; color:var(--text-main); margin:0.25rem 0;">--</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">Candidate accounts</div>
+        </div>
+
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Total Predictions Generated</div>
+          <div id="admin-total-preds" style="font-size:1.85rem; font-weight:800; color:var(--primary); margin:0.25rem 0;">--</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">All model runs</div>
+        </div>
+
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Likely Placed (Class 1)</div>
+          <div id="admin-positive-preds" style="font-size:1.85rem; font-weight:800; color:var(--success); margin:0.25rem 0;">--</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">Score &ge; 50%</div>
+        </div>
+
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Needs Improvement (Class 0)</div>
+          <div id="admin-negative-preds" style="font-size:1.85rem; font-weight:800; color:var(--warning); margin:0.25rem 0;">--</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">Score &lt; 50%</div>
+        </div>
+
+        <div class="card" style="padding:1.25rem;">
+          <div style="font-size:0.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Average Job Probability</div>
+          <div id="admin-avg-prob" style="font-size:1.85rem; font-weight:800; color:var(--secondary); margin:0.25rem 0;">--%</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">System-wide mean</div>
+        </div>
+      </div>
+
+      <!-- Charts Grid -->
+      <div class="admin-charts-grid">
+        <!-- Chart 1: Positive vs Negative Outcome -->
+        <div class="chart-card">
+          <h3 style="margin-bottom:0.25rem; font-size:1.15rem;">Placement Outcome Ratio</h3>
+          <p style="font-size:0.825rem; color:var(--text-muted); margin-bottom:1rem;">Distribution of Class 1 vs Class 0 predictions</p>
+          <div class="chart-container-wrapper">
+            <canvas id="adminOutcomeChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Probability Distribution Bands -->
+        <div class="chart-card">
+          <h3 style="margin-bottom:0.25rem; font-size:1.15rem;">Candidate Probability Bands</h3>
+          <p style="font-size:0.825rem; color:var(--text-muted); margin-bottom:1rem;">Histogram of prediction confidence tiers</p>
+          <div class="chart-container-wrapper">
+            <canvas id="adminDistChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live ML Model Metrics & Confusion Matrix -->
+      <div class="card" style="padding:1.75rem; margin-bottom:2rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h3 style="margin-bottom:0.25rem;">Trained Model Quality & Validation Matrix</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Empirical metrics evaluated on test partition (N=1,000)</p>
+          </div>
+          <span class="badge badge-primary">Model: LogisticRegression (L2)</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+          <div style="background:#f8fafc; padding:1rem; border-radius:var(--radius-md); text-align:center;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Accuracy</div>
+            <div id="admin-model-acc" style="font-size:1.4rem; font-weight:800; color:var(--primary);">90.8%</div>
+          </div>
+          <div style="background:#f8fafc; padding:1rem; border-radius:var(--radius-md); text-align:center;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Precision</div>
+            <div id="admin-model-prec" style="font-size:1.4rem; font-weight:800; color:var(--success);">93.7%</div>
+          </div>
+          <div style="background:#f8fafc; padding:1rem; border-radius:var(--radius-md); text-align:center;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">Recall</div>
+            <div id="admin-model-rec" style="font-size:1.4rem; font-weight:800; color:var(--secondary);">95.3%</div>
+          </div>
+          <div style="background:#f8fafc; padding:1rem; border-radius:var(--radius-md); text-align:center;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">F1-Score</div>
+            <div id="admin-model-f1" style="font-size:1.4rem; font-weight:800; color:#8b5cf6;">94.4%</div>
+          </div>
+          <div style="background:#f8fafc; padding:1rem; border-radius:var(--radius-md); text-align:center;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">ROC-AUC</div>
+            <div id="admin-model-auc" style="font-size:1.4rem; font-weight:800; color:#0ea5e9;">0.9493</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+          <!-- Confusion Matrix -->
+          <div>
+            <h4 style="font-size:0.95rem; margin-bottom:0.5rem;">Confusion Matrix</h4>
+            <div class="confusion-matrix-grid">
+              <div class="cm-cell" style="background:#f0fdf4; border-color:#bbf7d0;">
+                <div class="cm-val" id="cm-tp" style="color:var(--success);">782</div>
+                <div class="cm-lbl">True Positive (TP)</div>
+              </div>
+              <div class="cm-cell" style="background:#fef2f2; border-color:#fecaca;">
+                <div class="cm-val" id="cm-fp" style="color:var(--danger);">53</div>
+                <div class="cm-lbl">False Positive (FP)</div>
+              </div>
+              <div class="cm-cell" style="background:#fef2f2; border-color:#fecaca;">
+                <div class="cm-val" id="cm-fn" style="color:var(--danger);">39</div>
+                <div class="cm-lbl">False Negative (FN)</div>
+              </div>
+              <div class="cm-cell" style="background:#f0fdf4; border-color:#bbf7d0;">
+                <div class="cm-val" id="cm-tn" style="color:var(--success);">126</div>
+                <div class="cm-lbl">True Negative (TN)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Feature Weights -->
+          <div>
+            <h4 style="font-size:0.95rem; margin-bottom:0.5rem;">Top Feature Weights</h4>
+            <div class="table-responsive" style="max-height:220px; overflow-y:auto;">
+              <table class="data-table" style="font-size:0.8rem;">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Weight</th>
+                    <th>Impact</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-top-features-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="card" style="padding:1.75rem; margin-bottom:2rem;">
+        <h3 style="margin-bottom:0.25rem;">Registered Platform Users</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Candidate accounts synchronized with Supabase & MongoDB</p>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Predictions</th>
+                <th>Joined Date</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent System Predictions -->
+      <div class="card" style="padding:1.75rem;">
+        <h3 style="margin-bottom:0.25rem;">Recent System Predictions Log</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Real-time feed of candidate model evaluations</p>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Candidate</th>
+                <th>Probability</th>
+                <th>Label</th>
+                <th>Confidence</th>
+                <th>Model</th>
+              </tr>
+            </thead>
+            <tbody id="admin-preds-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. Administrator Console.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

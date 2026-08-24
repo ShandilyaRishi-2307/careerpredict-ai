@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Prediction Assessment — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/prediction.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link active">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/history.html" class="nav-link">History</a></li>
+        <li><a href="/profile.html" class="nav-link">Profile</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 2.5rem 0 4rem;">
+    <div class="container" style="max-width: 860px;">
+      
+      <!-- Prediction Wizard Card -->
+      <div id="prediction-wizard-container" class="wizard-card">
+        <!-- Header & Stepper -->
+        <div class="stepper-header">
+          <div style="text-align:center; margin-bottom:1.5rem;">
+            <h1 style="font-size:1.85rem; margin-bottom:0.35rem;">Career Potential Assessment</h1>
+            <p class="text-muted" style="font-size:0.95rem;">Complete the 5 sections below to evaluate your placement probability</p>
+          </div>
+
+          <div class="step-indicator-bar">
+            <div class="step-progress-active-line"></div>
+            
+            <button type="button" class="step-node active" data-step="1">
+              <span class="step-circle">1</span>
+              <span class="step-name">Personal</span>
+            </button>
+
+            <button type="button" class="step-node" data-step="2">
+              <span class="step-circle">2</span>
+              <span class="step-name">Education</span>
+            </button>
+
+            <button type="button" class="step-node" data-step="3">
+              <span class="step-circle">3</span>
+              <span class="step-name">Experience</span>
+            </button>
+
+            <button type="button" class="step-node" data-step="4">
+              <span class="step-circle">4</span>
+              <span class="step-name">Skills & Prep</span>
+            </button>
+
+            <button type="button" class="step-node" data-step="5">
+              <span class="step-circle">5</span>
+              <span class="step-name">Preferences</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form id="prediction-form">
+          <!-- Step 1: Personal -->
+          <section id="step-section-1" class="wizard-step active">
+            <div class="step-title-box">
+              <h2>Step 1: Personal Background</h2>
+              <p class="text-muted" style="font-size:0.85rem;">Basic demographic details for statistical calibration</p>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="input-age" class="form-label">Age</label>
+                <input type="number" id="input-age" class="form-control" value="23" min="16" max="80" required>
+              </div>
+
+              <div class="form-group">
+                <label for="input-gender" class="form-label">Gender</label>
+                <select id="input-gender" class="form-control">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Non-binary">Non-binary</option>
+                  <option value="Other">Other / Prefer not to say</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="input-location" class="form-label">Location / City</label>
+                <input type="text" id="input-location" class="form-control" placeholder="e.g. San Francisco, CA" value="San Francisco, CA">
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 2: Education -->
+          <section id="step-section-2" class="wizard-step">
+            <div class="step-title-box">
+              <h2>Step 2: Educational Qualifications</h2>
+              <p class="text-muted" style="font-size:0.85rem;">Academic level, field of study, and specialization</p>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="input-education" class="form-label">Highest Education Level</label>
+                <select id="input-education" class="form-control" required>
+                  <option value="High School">High School</option>
+                  <option value="Associate">Associate Degree</option>
+                  <option value="Bachelor's" selected>Bachelor's Degree (B.S. / B.Tech / B.E.)</option>
+                  <option value="Master's">Master's Degree (M.S. / M.Tech / M.E.)</option>
+                  <option value="Doctorate">Doctorate (Ph.D.)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="input-field" class="form-label">Field of Study</label>
+                <select id="input-field" class="form-control" required>
+                  <option value="Computer Science" selected>Computer Science & Engineering</option>
+                  <option value="Information Technology">Information Technology</option>
+                  <option value="Data Science">Data Science & Analytics</option>
+                  <option value="Electrical Engineering">Electrical / Electronics</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering</option>
+                  <option value="Business & Finance">Business & Finance</option>
+                  <option value="Other">Other Disciplines</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-degree" class="form-label">Degree Title / Specialization</label>
+              <input type="text" id="input-degree" class="form-control" placeholder="e.g. B.S. in Computer Science" value="B.S. in Computer Science">
+            </div>
+          </section>
+
+          <!-- Step 3: Experience & Projects -->
+          <section id="step-section-3" class="wizard-step">
+            <div class="step-title-box">
+              <h2>Step 3: Experience & Practical Portfolio</h2>
+              <p class="text-muted" style="font-size:0.85rem;">Internships, completed capstone projects, and industry exposure</p>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="input-experience" class="form-label">Years of Work Experience</label>
+                <input type="number" id="input-experience" class="form-control" value="1.0" min="0" max="30" step="0.5">
+                <small class="text-muted">Enter 0 for fresh graduates</small>
+              </div>
+
+              <div class="form-group">
+                <label for="input-internships" class="form-label">Internships Completed</label>
+                <input type="number" id="input-internships" class="form-control" value="2" min="0" max="15">
+              </div>
+
+              <div class="form-group">
+                <label for="input-previous-jobs" class="form-label">Previous Full-Time Jobs</label>
+                <input type="number" id="input-previous-jobs" class="form-control" value="0" min="0" max="10">
+              </div>
+            </div>
+
+            <div class="form-grid-2" style="margin-top:1rem;">
+              <div class="form-group">
+                <label for="input-projects" class="form-label">Major Portfolio Projects Completed</label>
+                <input type="number" id="input-projects" class="form-control" value="3" min="0" max="25">
+              </div>
+
+              <div class="form-group">
+                <label for="input-certifications" class="form-label">Professional Certifications (AWS, GCP, etc.)</label>
+                <input type="number" id="input-certifications" class="form-control" value="2" min="0" max="15">
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 4: Skills & Aptitude Sliders -->
+          <section id="step-section-4" class="wizard-step">
+            <div class="step-title-box">
+              <h2>Step 4: Technical Competencies & Soft Skills</h2>
+              <p class="text-muted" style="font-size:0.85rem;">Self-assessment score from 0% to 100% across core engineering pillars</p>
+            </div>
+
+            <!-- Technical Pillar -->
+            <div class="skills-group">
+              <div class="skills-group-title">💻 Technical & Engineering Core</div>
+              
+              <div class="form-group">
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                  <label for="input-technicalSkillScore" class="form-label">Overall Technical Skill</label>
+                  <span id="input-technicalSkillScore-val" class="badge badge-primary">78%</span>
+                </div>
+                <input type="range" id="input-technicalSkillScore" min="0" max="100" value="78">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-dataStructuresScore" class="form-label">Data Structures</label>
+                    <span id="input-dataStructuresScore-val" class="badge badge-secondary">75%</span>
+                  </div>
+                  <input type="range" id="input-dataStructuresScore" min="0" max="100" value="75">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-algorithmScore" class="form-label">Algorithms & Complexity</label>
+                    <span id="input-algorithmScore-val" class="badge badge-secondary">74%</span>
+                  </div>
+                  <input type="range" id="input-algorithmScore" min="0" max="100" value="74">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-webDevelopmentScore" class="form-label">Web Development</label>
+                    <span id="input-webDevelopmentScore-val" class="badge badge-secondary">80%</span>
+                  </div>
+                  <input type="range" id="input-webDevelopmentScore" min="0" max="100" value="80">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-databaseScore" class="form-label">Databases & SQL</label>
+                    <span id="input-databaseScore-val" class="badge badge-secondary">76%</span>
+                  </div>
+                  <input type="range" id="input-databaseScore" min="0" max="100" value="76">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-machineLearningScore" class="form-label">Machine Learning / AI</label>
+                    <span id="input-machineLearningScore-val" class="badge badge-secondary">68%</span>
+                  </div>
+                  <input type="range" id="input-machineLearningScore" min="0" max="100" value="68">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-cloudScore" class="form-label">Cloud & DevOps</label>
+                    <span id="input-cloudScore-val" class="badge badge-secondary">70%</span>
+                  </div>
+                  <input type="range" id="input-cloudScore" min="0" max="100" value="70">
+                </div>
+              </div>
+            </div>
+
+            <!-- Soft Skills & Readiness -->
+            <div class="skills-group">
+              <div class="skills-group-title">🤝 Soft Skills & Placement Readiness</div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-problemSolvingScore" class="form-label">Problem Solving</label>
+                    <span id="input-problemSolvingScore-val" class="badge badge-info">78%</span>
+                  </div>
+                  <input type="range" id="input-problemSolvingScore" min="0" max="100" value="78">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-communicationScore" class="form-label">Communication</label>
+                    <span id="input-communicationScore-val" class="badge badge-info">72%</span>
+                  </div>
+                  <input type="range" id="input-communicationScore" min="0" max="100" value="72">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-interviewScore" class="form-label">Interview Readiness</label>
+                    <span id="input-interviewScore-val" class="badge badge-info">75%</span>
+                  </div>
+                  <input type="range" id="input-interviewScore" min="0" max="100" value="75">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-resumeScore" class="form-label">Resume & Portfolio Quality</label>
+                    <span id="input-resumeScore-val" class="badge badge-info">80%</span>
+                  </div>
+                  <input type="range" id="input-resumeScore" min="0" max="100" value="80">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-aptitudeScore" class="form-label">Aptitude & Reasoning</label>
+                    <span id="input-aptitudeScore-val" class="badge badge-info">75%</span>
+                  </div>
+                  <input type="range" id="input-aptitudeScore" min="0" max="100" value="75">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-githubActivity" class="form-label">GitHub Activity / Open Source</label>
+                    <span id="input-githubActivity-val" class="badge badge-info">70%</span>
+                  </div>
+                  <input type="range" id="input-githubActivity" min="0" max="100" value="70">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-leadershipScore" class="form-label">Leadership Potential</label>
+                    <span id="input-leadershipScore-val" class="badge badge-secondary">65%</span>
+                  </div>
+                  <input type="range" id="input-leadershipScore" min="0" max="100" value="65">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                    <label for="input-teamworkScore" class="form-label">Teamwork & Collaboration</label>
+                    <span id="input-teamworkScore-val" class="badge badge-secondary">75%</span>
+                  </div>
+                  <input type="range" id="input-teamworkScore" min="0" max="100" value="75">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 5: Preferences -->
+          <section id="step-section-5" class="wizard-step">
+            <div class="step-title-box">
+              <h2>Step 5: Career Targets & Preferences</h2>
+              <p class="text-muted" style="font-size:0.85rem;">Target role, work structure, and compensation expectations</p>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="input-desired-role" class="form-label">Target Role</label>
+                <select id="input-desired-role" class="form-control">
+                  <option value="Software Developer" selected>Software Developer / Engineer</option>
+                  <option value="Full Stack Engineer">Full Stack Engineer</option>
+                  <option value="Backend Developer">Backend Developer</option>
+                  <option value="Frontend Developer">Frontend Developer</option>
+                  <option value="Data Scientist">Data Scientist</option>
+                  <option value="ML Engineer">Machine Learning Engineer</option>
+                  <option value="DevOps Engineer">DevOps & Cloud Engineer</option>
+                  <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                  <option value="Product Manager">Associate Product Manager</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="input-work-pref" class="form-label">Work Preference</label>
+                <select id="input-work-pref" class="form-control">
+                  <option value="Hybrid" selected>Hybrid</option>
+                  <option value="Remote">Remote</option>
+                  <option value="On-site">On-site</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="input-salary" class="form-label">Expected Annual Salary</label>
+                <input type="text" id="input-salary" class="form-control" placeholder="e.g. $95,000" value="$95,000">
+              </div>
+
+              <div class="form-group">
+                <label for="input-relocation" class="form-label">Willing to Relocate?</label>
+                <select id="input-relocation" class="form-control">
+                  <option value="Yes" selected>Yes</option>
+                  <option value="No">No</option>
+                  <option value="Depends on location">Depends on location / Relocation Package</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- Navigation Footer -->
+          <div class="wizard-footer">
+            <button type="button" id="wizard-prev-btn" class="btn btn-secondary" style="display:none;">
+              ← Back
+            </button>
+            <div style="flex:1;"></div>
+            <button type="button" id="wizard-next-btn" class="btn btn-primary">
+              Continue →
+            </button>
+            <button type="submit" id="wizard-submit-btn" class="btn btn-primary btn-lg" style="display:none;">
+              ⚡ Predict My Job Probability
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Result Container (Shown after prediction) -->
+      <div id="prediction-result-container" class="result-container">
+        <!-- Hero Result Box -->
+        <div class="prediction-hero-card">
+          <span class="badge badge-primary" style="background:rgba(255,255,255,0.15); color:#fff; border:none;">
+            Logistic Regression Model Output
+          </span>
+          <div class="hero-prob-number" id="res-job-prob">84.2%</div>
+          <div class="hero-prob-label">Placement Probability (<span id="res-pred-label">Likely to get Job</span>)</div>
+          <div class="hero-prob-subtext">Estimated probability based on your skills, experience, and profile attributes</div>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="result-metric-grid">
+          <div class="result-metric-card">
+            <div class="text-muted" style="font-size:0.8rem; text-transform:uppercase;">No-Job Probability</div>
+            <div class="metric-val" id="res-no-job-prob" style="color:var(--danger);">15.8%</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Complementary class (P=0)</div>
+          </div>
+
+          <div class="result-metric-card">
+            <div class="text-muted" style="font-size:0.8rem; text-transform:uppercase;">Confidence Level</div>
+            <div class="metric-val" id="res-confidence-badge" style="font-size:1.35rem; color:var(--primary);">Strong Potential</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Probability calibration band</div>
+          </div>
+
+          <div class="result-metric-card">
+            <div class="text-muted" style="font-size:0.8rem; text-transform:uppercase;">Readiness Index</div>
+            <div class="metric-val" id="res-readiness-score" style="color:var(--success);">79/100</div>
+            <div style="font-size:0.75rem; color:var(--text-light);">Composite readiness rating</div>
+          </div>
+        </div>
+
+        <!-- Actionable Recommendations Card -->
+        <div class="recommendations-box">
+          <h3 style="margin-bottom:0.5rem;">🎯 Tailored Actionable Recommendations</h3>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:1rem;">Targeted steps to maximize your hiring likelihood based on model feature sensitivities:</p>
+          <div id="res-recommendations-list"></div>
+        </div>
+
+        <!-- Skill Analysis Breakdown -->
+        <div class="card" style="padding:1.75rem; margin-bottom:2rem;">
+          <h3 style="margin-bottom:0.5rem;">📊 Skill Dimension Breakdown</h3>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom:1.5rem;">Visual comparison of your assessment ratings:</p>
+          <div id="res-skill-bars"></div>
+        </div>
+
+        <!-- Next Actions Footer -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; padding:1rem 0;">
+          <button type="button" id="result-try-again-btn" class="btn btn-secondary">
+            ↺ Retake / Adjust Inputs
+          </button>
+          <div style="display:flex; gap:0.75rem;">
+            <a href="/dashboard.html" class="btn btn-secondary">Go to Dashboard</a>
+            <a href="#" id="res-view-details-btn" class="btn btn-primary">View Full Snapshot Details →</a>
+          </div>
+        </div>
+
+        <!-- Disclaimer Banner -->
+        <div class="disclaimer-banner" style="margin-top:2rem;">
+          <span>ℹ️</span>
+          <div>
+            <strong>Model Disclaimer:</strong> This score is generated by an educational Logistic Regression machine learning model trained on standard software placement indicators. It is not an official guarantee of hiring.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+        <div>Model Version 1.0.0</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/prediction.js"></script>
+</body>
+</html>

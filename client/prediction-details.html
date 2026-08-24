@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Details — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/prediction.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/history.html" class="nav-link">History</a></li>
+        <li><a href="/profile.html" class="nav-link">Profile</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 2.5rem 0 4rem;">
+    <div class="container" style="max-width: 900px;">
+      
+      <!-- Top Navigation Link -->
+      <div style="margin-bottom:1.25rem;">
+        <a href="/history.html" class="text-muted" style="font-size:0.875rem; text-decoration:none;">
+          ← Back to Prediction History
+        </a>
+      </div>
+
+      <!-- Header Card -->
+      <div class="card" style="padding:1.75rem; margin-bottom:1.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h1 style="font-size:1.6rem; margin-bottom:0.25rem;">Assessment Snapshot</h1>
+            <p id="detail-date" class="text-muted" style="font-size:0.85rem;">Date</p>
+          </div>
+          <span id="detail-model-version" class="badge badge-info">Model Version: 1.0.0</span>
+        </div>
+      </div>
+
+      <!-- Hero Probability Output Card -->
+      <div class="prediction-hero-card">
+        <span class="badge badge-primary" style="background:rgba(255,255,255,0.15); color:#fff; border:none;">
+          Logistic Regression Inference Result
+        </span>
+        <div class="hero-prob-number" id="detail-job-prob">--%</div>
+        <div class="hero-prob-label">Placement Probability (<span id="detail-pred-label">--</span>)</div>
+        <div class="hero-prob-subtext">Estimated probability calculated from this historical snapshot</div>
+      </div>
+
+      <!-- Metric Highlights Grid -->
+      <div class="result-metric-grid">
+        <div class="result-metric-card">
+          <div class="text-muted" style="font-size:0.8rem; text-transform:uppercase;">No-Job Probability</div>
+          <div class="metric-val" id="detail-no-job-prob" style="color:var(--danger);">--%</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">Negative class estimate</div>
+        </div>
+
+        <div class="result-metric-card">
+          <div class="text-muted" style="font-size:0.8rem; text-transform:uppercase;">Confidence Level</div>
+          <div class="metric-val" id="detail-confidence-badge" style="font-size:1.25rem; color:var(--primary);">--</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">Calibration range</div>
+        </div>
+
+        <div class="result-metric-card">
+          <div class="text-muted" style="font-size:0.8rem; text-transform:uppercase;">Career Readiness</div>
+          <div class="metric-val" id="detail-readiness-score" style="color:var(--success);">--/100</div>
+          <div style="font-size:0.75rem; color:var(--text-light);">Composite readiness rating</div>
+        </div>
+      </div>
+
+      <!-- Snapshot Overview & Radar Chart -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+        <!-- Snapshot Summary Card -->
+        <div class="card" style="padding:1.5rem;">
+          <h3 style="margin-bottom:1rem; font-size:1.15rem;">Candidate Snapshot Data</h3>
+          <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:0.6rem; font-size:0.9rem;">
+            <li style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding-bottom:0.4rem;">
+              <span class="text-muted">Target Role:</span>
+              <strong id="snap-role">--</strong>
+            </li>
+            <li style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding-bottom:0.4rem;">
+              <span class="text-muted">Education:</span>
+              <strong id="snap-edu">--</strong>
+            </li>
+            <li style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding-bottom:0.4rem;">
+              <span class="text-muted">Experience:</span>
+              <strong id="snap-exp">--</strong>
+            </li>
+            <li style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding-bottom:0.4rem;">
+              <span class="text-muted">Portfolio Projects:</span>
+              <strong id="snap-projects">--</strong>
+            </li>
+            <li style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding-bottom:0.4rem;">
+              <span class="text-muted">Certifications:</span>
+              <strong id="snap-certs">--</strong>
+            </li>
+            <li style="display:flex; justify-content:space-between;">
+              <span class="text-muted">Internships:</span>
+              <strong id="snap-internships">--</strong>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Radar Chart -->
+        <div class="card" style="padding:1.5rem;">
+          <h3 style="margin-bottom:0.5rem; font-size:1.15rem;">Skills Visualization</h3>
+          <div style="position:relative; height:240px; width:100%;">
+            <canvas id="detailRadarCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strengths and Weaknesses Grid -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+        <div class="card" style="padding:1.5rem; border-top:3px solid var(--success);">
+          <h3 style="margin-bottom:0.75rem; font-size:1.1rem; color:var(--success);">✨ Identified Strengths</h3>
+          <ul id="detail-strengths-list" style="list-style:none; padding:0; margin:0;"></ul>
+        </div>
+
+        <div class="card" style="padding:1.5rem; border-top:3px solid var(--warning);">
+          <h3 style="margin-bottom:0.75rem; font-size:1.1rem; color:var(--warning);">⚠️ Areas for Growth</h3>
+          <ul id="detail-weaknesses-list" style="list-style:none; padding:0; margin:0;"></ul>
+        </div>
+      </div>
+
+      <!-- Target Role Skill Gaps -->
+      <div class="card" style="padding:1.5rem; margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:0.5rem; font-size:1.15rem;">Role Benchmark Comparison (<span id="detail-target-role-name">--</span>)</h3>
+        <div style="margin-bottom:0.75rem; font-size:0.875rem;">
+          <strong>Aligned Competencies:</strong>
+          <div id="detail-strong-areas" style="margin-top:0.35rem;"></div>
+        </div>
+        <div style="font-size:0.875rem;">
+          <strong>Target Improvement Areas for this Role:</strong>
+          <div id="detail-improve-areas" style="margin-top:0.35rem;"></div>
+        </div>
+      </div>
+
+      <!-- Recommendations Box -->
+      <div class="recommendations-box">
+        <h3 style="margin-bottom:0.5rem;">🎯 Tailored Action Plan</h3>
+        <div id="detail-recs-list"></div>
+      </div>
+
+      <!-- Retake Assessment CTA -->
+      <div style="text-align:center; margin-top:2rem;">
+        <a href="/predict.html" class="btn btn-primary btn-lg">
+          ⚡ Retake Assessment with Updated Skills
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+        <div>Model Version 1.0.0</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/prediction-details.js"></script>
+</body>
+</html>

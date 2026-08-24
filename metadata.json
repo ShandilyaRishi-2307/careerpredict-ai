@@ -1,0 +1,6 @@
+{
+  "name": "CareerPredict AI",
+  "description": "Full-stack job probability prediction system using a trained Logistic Regression machine learning model, Express.js backend, and Supabase authentication.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

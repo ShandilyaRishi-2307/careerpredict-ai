@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerPredict AI — Logistic Regression Based Job Prediction System</title>
+  <meta name="description" content="Predict your career potential with AI. Complete full-stack job probability prediction system using a trained Logistic Regression machine learning model.">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <!-- Chart.js & Supabase JS from official CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link active">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/history.html" class="nav-link">History</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/model.html" class="nav-link">Model</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-actions-container">
+        <a href="/login.html" class="btn btn-secondary btn-sm">Log In</a>
+        <a href="/register.html" class="btn btn-primary btn-sm">Register Free</a>
+      </div>
+
+      <button class="nav-toggle-btn" aria-label="Toggle navigation menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section style="padding: 4rem 0 3rem; background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.06) 0%, transparent 60%);">
+      <div class="container" style="text-align: center; max-width: 900px;">
+        <span class="badge badge-primary" style="margin-bottom: 1rem; padding: 0.3rem 0.75rem; font-size: 0.75rem;">
+          🤖 Real Trained Logistic Regression Machine Learning Pipeline
+        </span>
+
+        <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.03em;">
+          Predict Your <span class="text-gradient">Career Potential</span> with AI
+        </h1>
+
+        <p style="font-size: 1.1rem; color: var(--slate-600); margin-bottom: 2rem; line-height: 1.6;">
+          Analyze your technical skills, experience, education, and interview readiness using our mathematically calibrated machine learning model.
+        </p>
+
+        <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+          <a href="/predict.html" class="btn btn-primary btn-lg" id="hero-start-prediction-btn">
+            ⚡ Start Prediction
+          </a>
+          <a href="/model.html" class="btn btn-secondary btn-lg" id="hero-learn-more-btn">
+            🔍 Learn How It Works
+          </a>
+        </div>
+
+        <!-- Interactive Visual Demo Card -->
+        <div class="card card-dark" style="padding: 1.75rem; border-radius: var(--radius-lg); text-align: left; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--slate-800); padding-bottom: 0.875rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div class="form-label-uppercase" style="color: var(--slate-400); margin-bottom: 0.15rem;">Live Assessment Architecture</div>
+              <div style="font-size: 1.05rem; font-weight: 700; color: #fff;">Candidate Probability Stream</div>
+            </div>
+            <span class="badge badge-success" style="font-size: 0.75rem;">● Python ML Service Active</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--slate-800); padding: 1rem; border-radius: var(--radius-md);">
+              <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Model Classification</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #4ade80; margin: 0.25rem 0; font-family: var(--font-mono);">Likely (88.4%)</div>
+              <div style="font-size: 0.6875rem; color: var(--slate-500);">Decision threshold: &ge; 0.50</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--slate-800); padding: 1rem; border-radius: var(--radius-md);">
+              <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Career Readiness</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #60a5fa; margin: 0.25rem 0; font-family: var(--font-mono);">82 / 100</div>
+              <div style="font-size: 0.6875rem; color: var(--slate-500);">Multi-factor composite index</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--slate-800); padding: 1rem; border-radius: var(--radius-md);">
+              <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Model Accuracy (ROC-AUC)</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #c084fc; margin: 0.25rem 0; font-family: var(--font-mono);">90.8% (0.949)</div>
+              <div style="font-size: 0.6875rem; color: var(--slate-500);">Evaluated on 1,000 test records</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section style="padding: 4rem 0; background-color: var(--surface);">
+      <div class="container">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+          <h2 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Intelligent Features Built for You</h2>
+          <p>A comprehensive platform connecting front-end assessment forms, secure identity, scalable REST APIs, and machine learning inference.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+          <!-- Card 1 -->
+          <div class="card card-hover">
+            <div style="width: 48px; height: 48px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">
+              🎯
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">AI Prediction</h3>
+            <p>Analyze 20+ candidate dimensions with a trained Logistic Regression binary classification model to compute exact job probabilities.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card card-hover">
+            <div style="width: 48px; height: 48px; background: var(--secondary-light); color: var(--secondary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">
+              📊
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">Skill Analysis</h3>
+            <p>Understand your strengths and weaknesses across technical skills, problem solving, algorithms, and communication using radar visualizations.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card card-hover">
+            <div style="width: 48px; height: 48px; background: var(--success-bg); color: var(--success); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">
+              💡
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">Career Insights</h3>
+            <p>Receive tailored, actionable improvement suggestions based on your target job role, portfolio depth, and interview readiness scores.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="card card-hover">
+            <div style="width: 48px; height: 48px; background: var(--warning-bg); color: var(--warning); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">
+              📜
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">Prediction History</h3>
+            <p>Track your historical assessments with immutable snapshot storage, probability deltas, and progress monitoring over time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section style="padding: 4rem 0; background-color: var(--background);">
+      <div class="container">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+          <span class="badge badge-info" style="margin-bottom: 0.75rem;">Full-Stack Architecture</span>
+          <h2 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Modern Production Technology Stack</h2>
+          <p>Engineered with separation of concerns: Supabase for authentication, Express for business logic, MongoDB for data, and Python for ML.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; text-align: center;">
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🌐</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">HTML5</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Semantic Structure</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🎨</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">CSS3</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Responsive Design</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">⚡</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">Vanilla JS</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Interactive Client</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🛡️</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">Supabase</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Secure Auth</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🟢</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">Node.js</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Runtime</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🚀</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">Express.js</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">REST API</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🍃</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">MongoDB</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Mongoose Models</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">🐍</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">Python</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">ML Pipeline</div>
+          </div>
+          <div class="card" style="padding: 1.25rem;">
+            <div style="font-size: 1.75rem;">📈</div>
+            <div style="font-weight: 700; margin-top: 0.5rem; font-size: 0.95rem;">Scikit-learn</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Logistic Model</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call To Action -->
+    <section style="padding: 3.5rem 0; background: var(--slate-900); color: #fff; text-align: center; border-top: 1px solid var(--slate-800);">
+      <div class="container" style="max-width: 750px;">
+        <h2 style="color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 0.75rem;">Ready to explore your career potential?</h2>
+        <p style="color: var(--slate-400); font-size: 1rem; margin-bottom: 1.75rem;">
+          Analyze your skills, experience, and profile with CareerPredict AI to discover strengths and high-impact improvement opportunities.
+        </p>
+        <a href="/predict.html" class="btn btn-primary btn-lg" style="font-weight: 600; font-size: 0.95rem; padding: 0.75rem 1.75rem;">
+          ⚡ Start Prediction
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>⚡ CareerPredict AI</h3>
+          <p>AI-powered career potential prediction and skill analysis system utilizing trained Logistic Regression machine learning models.</p>
+          <div class="disclaimer-banner">
+            <span>ℹ️</span>
+            <div><strong>Disclaimer:</strong> This prediction is generated by a machine-learning model for educational and career-guidance purposes. It is an estimate and not a guarantee of employment.</div>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/predict.html">Prediction Form</a></li>
+            <li><a href="/dashboard.html">Candidate Dashboard</a></li>
+            <li><a href="/history.html">History Log</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Machine Learning</h4>
+          <ul class="footer-links">
+            <li><a href="/model.html">Logistic Regression</a></li>
+            <li><a href="/model.html#metrics">Model Evaluation</a></li>
+            <li><a href="/model.html#features">Feature Weights</a></li>
+            <li><a href="/about.html#architecture">System Architecture</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Responsible AI</h4>
+          <ul class="footer-links">
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/privacy.html#ethical">Ethical AI Principles</a></li>
+            <li><a href="/privacy.html#synthetic">Dataset Disclosure</a></li>
+            <li><a href="/admin.html">Admin Portal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved. Designed for educational & portfolio demonstration.</div>
+        <div>Built with HTML5, CSS3, JavaScript, Supabase, Express, MongoDB & Python.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

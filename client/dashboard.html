@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Dashboard — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link active">Dashboard</a></li>
+        <li><a href="/history.html" class="nav-link">History</a></li>
+        <li><a href="/profile.html" class="nav-link">Profile</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container">
+        <!-- Injected via main.js -->
+      </div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 2.5rem 0 4rem;">
+    <div class="container">
+      <!-- Header -->
+      <div class="dashboard-header">
+        <div class="dashboard-title">
+          <h1>Welcome, <span id="dash-welcome-name" class="text-gradient">Candidate</span></h1>
+          <p class="text-muted">Here is an overview of your career readiness and latest ML prediction scores.</p>
+        </div>
+        <div>
+          <a href="/predict.html" class="btn btn-primary" id="dash-new-pred-btn">
+            ⚡ New Prediction
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon primary">🎯</div>
+          <div class="stat-info">
+            <div class="stat-label">Career Readiness</div>
+            <div class="stat-value" id="dash-readiness-val">--/100</div>
+            <div class="stat-subtext">Composite skill benchmark</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon success">📈</div>
+          <div class="stat-info">
+            <div class="stat-label">Latest Probability</div>
+            <div class="stat-value" id="dash-latest-prob-val">--%</div>
+            <div class="stat-subtext">
+              <span id="dash-prob-delta-badge" class="badge badge-success" style="display:none; font-size:0.7rem;">+0% vs prev</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon secondary">📜</div>
+          <div class="stat-info">
+            <div class="stat-label">Total Predictions</div>
+            <div class="stat-value" id="dash-total-preds-val">0</div>
+            <div class="stat-subtext">Saved model runs</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon warning">⭐</div>
+          <div class="stat-info">
+            <div class="stat-label">Top Strength</div>
+            <div class="stat-value" id="dash-strongest-skill-val" style="font-size:1.15rem;">Technical</div>
+            <div class="stat-subtext">Highest relative weight</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest Prediction Highlight Banner -->
+      <div id="dash-prediction-highlight" class="prediction-highlight-card" style="display:none; margin-bottom:2rem;">
+        <div class="highlight-content">
+          <span class="badge badge-primary" style="background:rgba(255,255,255,0.15); color:#fff; border:none; margin-bottom:0.5rem;">
+            Latest Assessment (<span id="dash-highlight-date">Today</span>)
+          </span>
+          <h2>Candidate Classification: <span id="dash-highlight-label">Likely to be Placed</span></h2>
+          <p>Your technical foundation and problem solving indicate a strong alignment with entry and mid-level software engineering placements.</p>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <a href="#" id="dash-view-latest-btn" class="btn btn-secondary btn-sm" style="background:#fff; color:var(--primary); border:none; font-weight:700;">
+              View Full Assessment Report →
+            </a>
+            <a href="/predict.html" class="btn btn-outline btn-sm" style="border-color:rgba(255,255,255,0.4); color:#fff;">
+              Retake Assessment
+            </a>
+          </div>
+        </div>
+
+        <div class="highlight-score-badge">
+          <div class="highlight-score-value" id="dash-highlight-prob">82%</div>
+          <div class="highlight-score-label">Estimated Probability</div>
+          <span class="badge badge-success" id="dash-highlight-conf" style="margin-top:0.5rem; font-size:0.75rem;">Strong Potential</span>
+        </div>
+      </div>
+
+      <!-- Empty State Banner if 0 predictions -->
+      <div id="dash-empty-banner" class="card" style="display:none; padding:2.5rem; text-align:center; background:var(--surface); border:1px dashed var(--border); margin-bottom:2rem;">
+        <div style="font-size:3rem; margin-bottom:1rem;">🚀</div>
+        <h3>You haven't run any predictions yet!</h3>
+        <p style="color:var(--text-muted); max-width:550px; margin:0.5rem auto 1.5rem;">
+          Complete our 5-step assessment to calculate your job probability using our trained Logistic Regression machine learning model.
+        </p>
+        <a href="/predict.html" class="btn btn-primary btn-lg">⚡ Run Your First Prediction</a>
+      </div>
+
+      <!-- Main Dashboard Grid: Radar Chart + Quick Actions -->
+      <div class="dashboard-main-grid">
+        <!-- Radar Chart Card -->
+        <div class="card" style="padding:1.75rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <div>
+              <h3 style="margin-bottom:0.25rem;">Candidate Skill Profile</h3>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Comparing your scores against standard placement benchmarks</p>
+            </div>
+            <a href="/profile.html" class="btn btn-secondary btn-sm" style="font-size:0.8rem;">Edit Skills</a>
+          </div>
+          <div style="position:relative; height:320px; width:100%;">
+            <canvas id="skillRadarCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Quick Actions & Insights Card -->
+        <div class="quick-actions-card">
+          <h3 style="margin-bottom:0.25rem;">Quick Actions</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Navigate career tools</p>
+
+          <div class="action-list">
+            <a href="/predict.html" class="action-item">
+              <span>⚡ Start Prediction Assessment</span>
+              <span>→</span>
+            </a>
+            <a href="/profile.html" class="action-item">
+              <span>👤 Update Candidate Profile</span>
+              <span>→</span>
+            </a>
+            <a href="/history.html" class="action-item">
+              <span>📜 View All Saved Predictions</span>
+              <span>→</span>
+            </a>
+            <a href="/model.html" class="action-item">
+              <span>🧠 Model Metrics & Feature Weights</span>
+              <span>→</span>
+            </a>
+          </div>
+
+          <div style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border);">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--text-main); margin-bottom:0.5rem;">💡 Recommendation Tip:</div>
+            <div style="font-size:0.825rem; color:var(--text-muted); line-height:1.5;">
+              Increasing your Data Structures and Problem Solving scores to &ge;75% has the highest positive coefficient on your job placement probability.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent History Section -->
+      <div class="card" style="padding:1.75rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="margin-bottom:0.25rem;">Recent Prediction History</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Your 5 most recent assessment runs</p>
+          </div>
+          <a href="/history.html" class="btn btn-secondary btn-sm" style="font-size:0.8rem;">View Full History →</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Job Probability</th>
+                <th>Classification</th>
+                <th>Confidence</th>
+                <th style="text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="dash-recent-history-tbody">
+              <tr>
+                <td colspan="5" style="text-align:center; padding:2rem;">
+                  <span class="spinner spinner-primary"></span>
+                  <p style="margin-top:0.5rem;">Loading recent predictions...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+        <div>Model Version 1.0.0 &bull; Dual-Persistence Enabled</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

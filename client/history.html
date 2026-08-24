@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction History — CareerPredict AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/history.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span>CareerPredict <span style="color:var(--primary);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/predict.html" class="nav-link">Predict</a></li>
+        <li><a href="/dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="/history.html" class="nav-link active">History</a></li>
+        <li><a href="/profile.html" class="nav-link">Profile</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions-container"></div>
+      <button class="nav-toggle-btn">☰</button>
+    </div>
+  </header>
+
+  <main style="padding: 2.5rem 0 4rem;">
+    <div class="container">
+      <!-- Title Header -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <h1 style="font-size:1.85rem; margin-bottom:0.25rem;">Prediction History</h1>
+          <p class="text-muted">Review, compare, and manage your previous ML model assessments</p>
+        </div>
+        <a href="/predict.html" class="btn btn-primary btn-sm">⚡ Run New Prediction</a>
+      </div>
+
+      <!-- Controls: Filters & Sorting -->
+      <div class="history-controls">
+        <div class="filter-group">
+          <button class="filter-chip active" data-filter="all">All Assessments</button>
+          <button class="filter-chip" data-filter="likely">Likely (Class 1)</button>
+          <button class="filter-chip" data-filter="unlikely">Needs Imp. (Class 0)</button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <label for="history-sort-select" style="font-size:0.85rem; font-weight:600; color:var(--text-muted);">Sort By:</label>
+          <select id="history-sort-select" class="form-control" style="width:auto; padding:0.4rem 0.75rem; font-size:0.85rem;">
+            <option value="newest" selected>Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="highest">Highest Probability</option>
+            <option value="lowest">Lowest Probability</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table Wrapper -->
+      <div id="history-table-wrapper" class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Target Role & Degree</th>
+              <th>Job Probability</th>
+              <th>Classification</th>
+              <th>Confidence</th>
+              <th>Model</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <!-- Injected via history.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div id="page-indicator" style="font-size:0.875rem; color:var(--text-muted);">
+          Page 1 of 1 (0 records)
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+          <button id="prev-page-btn" class="btn btn-secondary btn-sm" disabled>← Previous</button>
+          <button id="next-page-btn" class="btn btn-secondary btn-sm" disabled>Next →</button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="history-empty-state" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📜</div>
+        <h3>No Assessment Records Found</h3>
+        <p class="text-muted" style="max-width:450px; margin:0.5rem auto 1.5rem;">
+          You haven't run any career prediction assessments matching this filter.
+        </p>
+        <a href="/predict.html" class="btn btn-primary">⚡ Take Career Assessment</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CareerPredict AI. All rights reserved.</div>
+        <div>Model Version 1.0.0</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/supabase.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/history.js"></script>
+</body>
+</html>

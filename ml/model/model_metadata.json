@@ -1,0 +1,239 @@
+{
+  "modelName": "Logistic Regression Classifier",
+  "algorithm": "Ridge Logistic Regression (L2 Regularized)",
+  "modelVersion": "1.0.0",
+  "trainingDate": "2026-08-23",
+  "datasetSize": 5000,
+  "trainTestSplit": "80/20",
+  "randomState": 42,
+  "classificationThreshold": 0.5,
+  "metrics": {
+    "accuracy": 0.907,
+    "precision": 0.9375,
+    "recall": 0.9501,
+    "f1": 0.9437,
+    "rocAuc": 0.9491,
+    "confusionMatrix": {
+      "truePositive": 780,
+      "trueNegative": 127,
+      "falsePositive": 52,
+      "falseNegative": 41
+    },
+    "testSamples": 1000
+  },
+  "bias": 2.0015,
+  "topFeatures": [
+    {
+      "feature": "education_level_Master's",
+      "weight": 0.9404,
+      "impact": "Positive"
+    },
+    {
+      "feature": "education_level_Bachelor's",
+      "weight": 0.8298,
+      "impact": "Positive"
+    },
+    {
+      "feature": "technical_skill_score",
+      "weight": 0.7252,
+      "impact": "Positive"
+    },
+    {
+      "feature": "resume_score",
+      "weight": 0.6247,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Electrical Engineering",
+      "weight": 0.5237,
+      "impact": "Positive"
+    },
+    {
+      "feature": "problem_solving_score",
+      "weight": 0.5115,
+      "impact": "Positive"
+    },
+    {
+      "feature": "interview_score",
+      "weight": 0.492,
+      "impact": "Positive"
+    },
+    {
+      "feature": "project_count",
+      "weight": 0.4758,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Computer Science",
+      "weight": 0.4361,
+      "impact": "Positive"
+    },
+    {
+      "feature": "aptitude_score",
+      "weight": 0.4255,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Data Science",
+      "weight": 0.4068,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Information Technology",
+      "weight": 0.3702,
+      "impact": "Positive"
+    }
+  ],
+  "allFeatures": [
+    {
+      "feature": "education_level_Master's",
+      "weight": 0.9404,
+      "impact": "Positive"
+    },
+    {
+      "feature": "education_level_Bachelor's",
+      "weight": 0.8298,
+      "impact": "Positive"
+    },
+    {
+      "feature": "technical_skill_score",
+      "weight": 0.7252,
+      "impact": "Positive"
+    },
+    {
+      "feature": "resume_score",
+      "weight": 0.6247,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Electrical Engineering",
+      "weight": 0.5237,
+      "impact": "Positive"
+    },
+    {
+      "feature": "problem_solving_score",
+      "weight": 0.5115,
+      "impact": "Positive"
+    },
+    {
+      "feature": "interview_score",
+      "weight": 0.492,
+      "impact": "Positive"
+    },
+    {
+      "feature": "project_count",
+      "weight": 0.4758,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Computer Science",
+      "weight": 0.4361,
+      "impact": "Positive"
+    },
+    {
+      "feature": "aptitude_score",
+      "weight": 0.4255,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Data Science",
+      "weight": 0.4068,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Information Technology",
+      "weight": 0.3702,
+      "impact": "Positive"
+    },
+    {
+      "feature": "education_level_PhD",
+      "weight": 0.3604,
+      "impact": "Positive"
+    },
+    {
+      "feature": "github_activity",
+      "weight": 0.2966,
+      "impact": "Positive"
+    },
+    {
+      "feature": "field_of_study_Other",
+      "weight": 0.2645,
+      "impact": "Positive"
+    },
+    {
+      "feature": "years_experience",
+      "weight": 0.2346,
+      "impact": "Positive"
+    },
+    {
+      "feature": "certification_count",
+      "weight": 0.2186,
+      "impact": "Positive"
+    },
+    {
+      "feature": "communication_score",
+      "weight": 0.2162,
+      "impact": "Positive"
+    },
+    {
+      "feature": "internship_count",
+      "weight": 0.2088,
+      "impact": "Positive"
+    },
+    {
+      "feature": "algorithm_score",
+      "weight": 0.1565,
+      "impact": "Positive"
+    },
+    {
+      "feature": "previous_jobs",
+      "weight": 0.1475,
+      "impact": "Positive"
+    },
+    {
+      "feature": "education_level_Diploma",
+      "weight": -0.1292,
+      "impact": "Negative"
+    },
+    {
+      "feature": "cloud_score",
+      "weight": 0.1203,
+      "impact": "Positive"
+    },
+    {
+      "feature": "web_development_score",
+      "weight": 0.074,
+      "impact": "Positive"
+    },
+    {
+      "feature": "data_structures_score",
+      "weight": -0.0725,
+      "impact": "Negative"
+    },
+    {
+      "feature": "database_score",
+      "weight": 0.0679,
+      "impact": "Positive"
+    },
+    {
+      "feature": "leadership_score",
+      "weight": -0.044,
+      "impact": "Negative"
+    },
+    {
+      "feature": "machine_learning_score",
+      "weight": 0.0368,
+      "impact": "Positive"
+    },
+    {
+      "feature": "teamwork_score",
+      "weight": -0.0297,
+      "impact": "Negative"
+    },
+    {
+      "feature": "age",
+      "weight": -0.0001,
+      "impact": "Negative"
+    }
+  ]
+}
