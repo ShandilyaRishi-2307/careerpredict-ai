@@ -99,6 +99,10 @@ function startPythonMLService() {
         if (msg && !msg.includes('GET /health')) console.warn(`[Python ML] ${msg}`);
       });
 
+      pyServiceProcess.on('error', (err: any) => {
+        console.log(`[ML Engine] Running built-in native vectorized Logistic Regression engine (Python background server inactive: ${err.message})`);
+      });
+
       pyServiceProcess.on('exit', (code: number) => {
         console.log(`[Python ML Service] Process stopped with code ${code}`);
       });
