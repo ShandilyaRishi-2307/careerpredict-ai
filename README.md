@@ -6,7 +6,7 @@
 
 This contains everything you need to run your app locally.
 
-View your app : https://careerpredict-ai.onrender.com/
+View your app : https://careerpredict-ai.ai.studio/
 
 ## Run Locally
 
